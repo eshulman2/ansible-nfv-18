@@ -19,8 +19,8 @@
     - name: Reboot instances to make sure nics are bound to kernel
       openstack.cloud.server_action:
         cloud: "{{ cloud_name | default('overcloud') }}"
-        state: reboot_soft
-        name: "{{ item.name }}"
+        action: reboot_soft
+        server: "{{ item.name }}"
         timeout: 300
       loop: "{{ dynamic_instances }}"
 
