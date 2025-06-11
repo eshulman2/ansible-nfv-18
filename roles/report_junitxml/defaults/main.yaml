@@ -1,0 +1,4 @@
+perf_result_threshold: 1000000
+failures: 0
+errors: 0
+junitxml_output_path: /var/lib/AnsibleTests/external_files/{{ dut_type }}_perf_results.junitxml
