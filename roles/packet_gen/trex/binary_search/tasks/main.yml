@@ -180,8 +180,11 @@
 - name: Stop TestPMD On DuT
   shell: "tmux list-sessions -F '#S' | xargs -n1 tmux kill-session -t"
   become: True
-  delegate_to: "{{ groups[dut_group]|first }}"
-  when: "dut_group and dut_group|length > 0"
+  delegate_to: "{{ groups[dut_group] | first }}"
+  when:
+    - dut_group and dut_group | length > 0
+    - launch_testpmd | default(true) | bool
+    - groups[dut_group] | default([]) | length > 0
 
 - name: Parse JSON Result From Output File
   block:
