@@ -16,12 +16,12 @@
         name: roles/post_install/dynamic_host_inventory
       loop: "{{ dynamic_instances }}"
 
-- hosts: "{{ dut_compute | default(omit) }}"
+- hosts: "{{ dut_compute | default([]) or [] }}"
   become: true
   roles:
     - role: roles/packet_gen/trex/compute_tuning
 
-- hosts: "{{ hci_group | default(omit) }}"
+- hosts: "{{ hci_group | default([]) or [] }}"
   roles:
     - role: roles/packet_gen/trex/launch_fio
       when: launch_hci_stress | default(False)|bool
@@ -31,7 +31,7 @@
     - role: roles/packet_gen/trex/trex_instance_config
       when: trex_instance_config | default(True)|bool
 
-- hosts: "{{ dut_group | default(omit) }}"
+- hosts: "{{ dut_group | default([]) or [] }}"
   become: true
   roles:
     - role: tuning/cpu_pinning_huge_pages
@@ -66,7 +66,7 @@
             #openstack server reboot --wait "{{ testpmd_vm }}"
       when: osp_reboot | default(False)|bool
 
-- hosts: "{{ dut_group | default(omit) }}"
+- hosts: "{{ dut_group | default([]) or [] }}"
   gather_facts: False
   become: true
   tasks:
@@ -76,7 +76,7 @@
         delay: 5
       when: osp_reboot | default(False)|bool
 
-- hosts: "{{ dut_group | default(omit) }}"
+- hosts: "{{ dut_group | default([]) or [] }}"
   roles:
     - role: roles/packet_gen/trex/bind_dpdk_nics
       vars:
@@ -91,7 +91,7 @@
         - launch_testpmd | default(True)|bool
         - not launch_grout | default(False)|bool
 
-- hosts: "{{ dut_group | default(omit) }}"
+- hosts: "{{ dut_group | default([]) or [] }}"
   become: true
   roles:
     - role: roles/packet_gen/trex/launch_grout
@@ -133,7 +133,7 @@
         delay: 5
       when: osp_reboot | default(False)|bool
 
-- hosts: "{{ dut_compute | default(omit) }}"
+- hosts: "{{ dut_compute | default([]) or [] }}"
   become: true
   roles:
     - role: roles/packet_gen/trex/multiqueue_autob_config
@@ -154,7 +154,7 @@
     - role: roles/packet_gen/trex/binary_search
       when: binary_search | default(True)|bool
 
-- hosts: "{{ dut_compute | default(omit) }}"
+- hosts: "{{ dut_compute | default([]) or [] }}"
   become: true
   roles:
     - role: roles/packet_gen/trex/multiqueue_autob_config
