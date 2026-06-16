@@ -22,7 +22,7 @@
         name: pmd_load_balance
         tasks_from: start.yml
   when:
-    - dut_compute|length > 0
+    - dut_compute is defined and dut_compute | length > 0
     - pmd_lb is defined
     - pmd_lb in ['ovs', 'user']
 
@@ -127,7 +127,7 @@
         name: pmd_load_balance
         tasks_from: pause.yml
   when:
-    - dut_compute|length > 0
+    - dut_compute is defined and dut_compute | length > 0
     - pmd_lb is defined
     - pmd_lb in ['ovs', 'user']
     - pmd_lb_pretest == True
@@ -158,7 +158,7 @@
         name: pmd_load_balance
         tasks_from: stop.yml
   when:
-    - dut_compute|length > 0
+    - dut_compute is defined and dut_compute | length > 0
     - pmd_lb is defined
     - pmd_lb in ['ovs', 'user']
 
@@ -200,7 +200,7 @@
 
 - name: dut_compute tasks
   delegate_to: "{{ dut_compute if dut_compute else 'none' }}"
-  when: dut_compute|length > 0
+  when: dut_compute is defined and dut_compute | length > 0
   block:
     - name: Fetch OVS version from compute node
       shell: "ovs-vsctl --version | grep 'Open vSwitch' | sed 's/ovs-vsctl \\(.*\\) //'"
